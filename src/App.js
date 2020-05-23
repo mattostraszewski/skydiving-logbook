@@ -53,6 +53,24 @@ export default class App extends Component {
     }
   }
 
+  add = () => {
+    // we want to update our jumps state with key value
+    // pairs set to empty strings.
+    //we need to update our jumpCount +1
+
+    let { jumpCount } = this.state
+    this.setState({
+      jumpCount: 1,
+      jumps: [{
+        jumpNumber: 1,
+        dateInput: "",
+        discipline: "",
+        dropzone: "",
+        jumpDetails: ""
+      }]
+    })
+  }
+
 
 
   createJump = (data) => {
@@ -84,17 +102,20 @@ export default class App extends Component {
   }
 
   deleteJump = (data) => {
-    console.log(data)
     axios.delete(`/api/jump/${data.id}`).then((res) => {
-      const { jumpCount } = this.state
+      const { jumpCount, jumps } = this.state
       // if on jump 1 when we hit delete we subract 1 so jump count is 0 
       // becuase jump.length !== 0 we display the jump component with jumpCount = 0 which is wrong
 
       // we need to check if when deleting jump number 1 we dont set the jump count to 0, we set it to 1
-      // when we set jump count to one the jump.js was checking jumptCount to determine if it needed to jumpdate state
+      // when we set jump count to one the jump.js was checking jumpCount to determine if it needed to update state
       // we switched the check to look at jump.id and it fixed the bug
       let newJumpCount = jumpCount - 1
-      if (jumpCount === 1) newJumpCount = 1
+
+      //We are doing this because if we delete jump 1 and there are more jumps still in our jumps array
+      // we want to decrement our jump count by 1 otherwise we will set it to 0 to allow us to add one to our 
+      // jumpCount in our add function.
+      if (jumpCount === 1 && jumps.length > 1) newJumpCount = 1
 
       this.setState({ jumps: res.data, jumpCount: newJumpCount })
     })
@@ -104,23 +125,21 @@ export default class App extends Component {
   render() {
     const { jumps, jumpCount } = this.state;
     const currentJump = jumps[jumpCount - 1];
-    console.log(this.state.jumps)
-    console.log(currentJump)
 
     return (
       <div className='App' >
         <Header />
         <NavButtons previous={this.previous} next={this.next} />
         {jumps.length === 0 ?
-          <p>ADD FIRST JUMP</p>
+          <button className='addButton' onClick={this.add}>ADD FIRST JUMP</button>
           : (
             <Jump
               jump={currentJump}
               jumpCount={jumpCount}
-              // create={this.createJump}
-              edit={this.editJump}
+              { !jumps.id ? create = { this.createJump } : (
+                edit = { this.editJump }
               delete={this.deleteJump}
-            />
+            />)}
           )}
       </div >
 

@@ -19,7 +19,6 @@ export default class Jump extends Component {
   // Need to set the data to state to enable us top edit the inputs.
   componentDidMount() {
     const { jump } = this.props;
-    console.log("mounting")
     if (jump) {
       this.setJumpDataToState(jump)
     }
@@ -30,10 +29,8 @@ export default class Jump extends Component {
   componentWillReceiveProps(nextProps) {
     const { jump: newJump } = nextProps;
     const { jump: currentJump } = this.props;
-    console.log("recieved new props")
 
     if (newJump && newJump.id !== currentJump.id) {
-      console.log('updating state with new props')
       //We are checking to see if we are on the same jump that this component 
       //thinks we are on. If the jump is the same then there is no need to update the state.
       this.setJumpDataToState(newJump)
@@ -98,9 +95,11 @@ export default class Jump extends Component {
 
         </div>
 
-        <button onClick={() => this.props.edit(this.state)}>Save</button>
+        <button onClick={() => this.props.edit(this.state)}>Save Jump</button>
 
-        <button onClick={() => this.props.delete(this.state)}>Delete</button>
+        <button onClick={() => this.props.delete(this.state)}>Delete Jump</button>
+
+        <button onClick={() => this.props.create(this.state)}>Create Jump</button>
       </div>
     )
   }
