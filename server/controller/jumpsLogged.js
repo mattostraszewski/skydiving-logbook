@@ -58,10 +58,21 @@ module.exports = {
     const index = jumps.findIndex(e => e.id === +jump_id)
 
     if (index === -1) {
-      return res.status(404).send(jumps)
+      return res.status(404).send("Jump not found")
     } else {
-      const updatedJump = { id: jump_id, jumpNumber, date, discipline, dropzone, jumpDetails }
+      const updatedJump = { id: +jump_id, jumpNumber, date, discipline, dropzone, jumpDetails }
       jumps.splice(index, 1, updatedJump)
+    } res.status(200).send(jumps)
+  },
+
+  deleteJump: (req, res) => {
+    const { jump_id } = req.params
+    console.log("here")
+    const ind = jumps.findIndex((e) => e.id === +jump_id)
+    if (ind === -1) {
+      return res.status(404).send("Jump not found")
+    } else {
+      jumps.splice(ind, 1)
     } res.status(200).send(jumps)
   }
 }

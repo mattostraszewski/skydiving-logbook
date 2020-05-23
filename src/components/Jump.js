@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 
 export default class Jump extends Component {
 
@@ -16,18 +15,41 @@ export default class Jump extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { jump } = nextProps;
+  // Component did mount runs once when the component is mounted.
+  // Need to set the data to state to enable us top edit the inputs.
+  componentDidMount() {
+    const { jump } = this.props;
+    console.log("mounting")
     if (jump) {
-      this.setState({
-        id: jump.id,
-        jumpNumber: jump.jumpNumber,
-        dateInput: jump.date,
-        disciplineInput: jump.discipline,
-        dropzoneInput: jump.dropzone,
-        jumpDetailsInput: jump.jumpDetails
-      })
+      this.setJumpDataToState(jump)
     }
+  }
+
+  // Runs when the component recieves new data in its props. Next or previous
+  // When the jumpCount changes (next or previous is pushed) our component will need to recieve the new props/data and set them to state.
+  componentWillReceiveProps(nextProps) {
+    const { jump: newJump } = nextProps;
+    const { jump: currentJump } = this.props;
+    console.log("recieved new props")
+
+    if (newJump && newJump.id !== currentJump.id) {
+      console.log('updating state with new props')
+      //We are checking to see if we are on the same jump that this component 
+      //thinks we are on. If the jump is the same then there is no need to update the state.
+      this.setJumpDataToState(newJump)
+    }
+  }
+
+
+  setJumpDataToState(jump) {
+    this.setState({
+      id: jump.id,
+      jumpNumber: jump.jumpNumber,
+      dateInput: jump.date,
+      disciplineInput: jump.discipline,
+      dropzoneInput: jump.dropzone,
+      jumpDetailsInput: jump.jumpDetails
+    })
   }
 
   handleChange = (e) => {
@@ -77,6 +99,8 @@ export default class Jump extends Component {
         </div>
 
         <button onClick={() => this.props.edit(this.state)}>Save</button>
+
+        <button onClick={() => this.props.delete(this.state)}>Delete</button>
       </div>
     )
   }

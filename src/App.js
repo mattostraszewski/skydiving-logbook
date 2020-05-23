@@ -55,12 +55,18 @@ export default class App extends Component {
 
 
 
-  // createJump = () => {
-  //   const body = { jumpNumber, date, discipline, dropzone, jumpDetails, image }
-  //   axios.post('/api/jump', body).then((res) => {
-  //     this.setState({ jumps: res.data })
-  //   })
-  // }
+  createJump = (data) => {
+    const body = {
+      jumpNumber: data.jumpNumber,
+      date: data.dateInput,
+      discipline: data.disciplineInput,
+      dropzone: data.dropzoneInput,
+      jumpDetails: data.jumpDetailsInput
+    }
+    axios.post('/api/jump', body).then((res) => {
+      this.setState({ jumps: res.data })
+    })
+  }
 
 
 
@@ -77,22 +83,45 @@ export default class App extends Component {
     })
   }
 
+  deleteJump = (data) => {
+    console.log(data)
+    axios.delete(`/api/jump/${data.id}`).then((res) => {
+      const { jumpCount } = this.state
+      // if on jump 1 when we hit delete we subract 1 so jump count is 0 
+      // becuase jump.length !== 0 we display the jump component with jumpCount = 0 which is wrong
+
+      // we need to check if when deleting jump number 1 we dont set the jump count to 0, we set it to 1
+      // when we set jump count to one the jump.js was checking jumptCount to determine if it needed to jumpdate state
+      // we switched the check to look at jump.id and it fixed the bug
+      let newJumpCount = jumpCount - 1
+      if (jumpCount === 1) newJumpCount = 1
+
+      this.setState({ jumps: res.data, jumpCount: newJumpCount })
+    })
+  }
+
+
   render() {
     const { jumps, jumpCount } = this.state;
     const currentJump = jumps[jumpCount - 1];
     console.log(this.state.jumps)
+    console.log(currentJump)
 
     return (
-      <div className='App'>
+      <div className='App' >
         <Header />
         <NavButtons previous={this.previous} next={this.next} />
-        <Jump
-          jump={currentJump}
-          jumpCount={jumpCount}
-          // create={this.createJump}
-          edit={this.editJump}
-        // delete={this.deleteJump}
-        />
+        {jumps.length === 0 ?
+          <p>ADD FIRST JUMP</p>
+          : (
+            <Jump
+              jump={currentJump}
+              jumpCount={jumpCount}
+              // create={this.createJump}
+              edit={this.editJump}
+              delete={this.deleteJump}
+            />
+          )}
       </div >
 
     )
