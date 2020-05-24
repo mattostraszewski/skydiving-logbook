@@ -19,7 +19,8 @@ export default class Jump extends Component {
   componentDidMount() {
     const { jump } = this.props;
     if (jump) {
-      this.setJumpDataToState(jump)
+      this.setJumpDataToState(jump) // we pass in jump because this will set the current jump we are looking
+      // at to our current updated state.
     }
   }
 
@@ -36,7 +37,9 @@ export default class Jump extends Component {
     }
   }
 
-
+  // this function is responsible for setting the jump data to state. it takes in jump as an argument
+  // because that is equal to the current jump we are looking at in our array of jumps. jump comes into
+  // this component via props.
   setJumpDataToState(jump) {
     this.setState({
       id: jump.id,
@@ -46,7 +49,8 @@ export default class Jump extends Component {
       jumpDetailsInput: jump.jumpDetails
     })
   }
-
+  // this function is responsible for updating our state on every event(e)/each key 
+  // the user inputs and setting that new data to state.
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
@@ -56,6 +60,7 @@ export default class Jump extends Component {
   render() {
     const { jumpCount, jump } = this.props;
     const { dateInput, disciplineInput, dropzoneInput, jumpDetailsInput } = this.state
+    // grabbing this data from this.state allows us to update it via our handleChange function...
 
     return (
       <div className='logCardButtons'>
