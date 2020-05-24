@@ -122,10 +122,13 @@ export default class App extends Component {
     const { jumps, jumpCount } = this.state;
     const currentJump = jumps[jumpCount - 1];
 
+
     return (
       <div className='App' >
         <Header />
-        <NavButtons previous={this.previous} next={this.next} />
+        {currentJump && !currentJump.id ?
+          <h1 className='wayToGo'>Congrats On Your New Jump!</h1>
+          : <NavButtons previous={this.previous} next={this.next} />}
         {jumps.length === 0 ?
           <button className='addButton' onClick={this.add}>ADD FIRST JUMP</button>
           : (

@@ -93,12 +93,12 @@ export default class Jump extends Component {
 
         </div>
 
-        {!jump.id ? <button onClick={() => this.props.create(this.state)}>Create Jump</button>
+        {!jump.id ? <button className='button create' onClick={() => this.props.create(this.state)}>Create Jump</button>
           : (
-            <div>
-              <button onClick={() => this.props.delete(this.state)}>Delete Jump</button>
-              <button onClick={() => this.props.edit(this.state)}>Save Jump</button>
-              <button onClick={() => this.props.addAlways(this.state)}>Add Jump</button>
+            <div className='funButtons'>
+              <button className='button' onClick={() => this.props.delete(this.state)}>Delete Jump</button>
+              <button className='button' onClick={() => this.props.edit(this.state)}>Save Jump</button>
+              <button className='button' onClick={() => this.props.addAlways(this.state)}>Add Jump</button>
             </div>
           )}
       </div >

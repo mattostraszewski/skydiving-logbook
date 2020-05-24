@@ -2,7 +2,7 @@ const jumps = [
   {
     id: 10,
     date: '04/16/2020',
-    discipline: 'freefly',
+    discipline: 'Freefly',
     dropzone: 'Skydive Arizona',
     jumpDetails: "Fun exit with friends",
     image: 'image'
@@ -10,7 +10,7 @@ const jumps = [
   {
     id: 20,
     date: '04/19/2020',
-    discipline: 'belly',
+    discipline: 'Belly',
     dropzone: 'Skydive Arizona',
     jumpDetails: "Fun jump with friends",
     image: 'image'
@@ -18,7 +18,7 @@ const jumps = [
   {
     id: 30,
     date: '04/20/2020',
-    discipline: 'freefly',
+    discipline: 'Freefly',
     dropzone: 'Skydive Utah',
     jumpDetails: "Fun head down with friends",
     image: 'image'
@@ -26,7 +26,7 @@ const jumps = [
   {
     id: 40,
     date: '04/21/2020',
-    discipline: 'high pull',
+    discipline: 'High Pull',
     dropzone: 'Skydive CrossKeys',
     jumpDetails: "Highpull with friends",
     image: 'image'

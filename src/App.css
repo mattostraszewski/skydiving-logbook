@@ -127,6 +127,30 @@
   font-size: 15px;
 }
 
+.funButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80vw;
+  margin: 10px;
+}
+
+.button, .addButton{
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.create, .addButton {
+  margin: 10px;
+}
+
+.wayToGo {
+  margin-top: 67px;
+}
+
+
 
 @media (max-width: 900px){
   .logbook{
