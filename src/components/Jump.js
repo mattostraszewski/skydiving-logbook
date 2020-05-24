@@ -56,7 +56,7 @@ export default class Jump extends Component {
   }
 
   render() {
-    const { jumpCount } = this.props;
+    const { jumpCount, jump } = this.props;
     const { dateInput, disciplineInput, dropzoneInput, jumpDetailsInput } = this.state
 
     return (
@@ -95,12 +95,15 @@ export default class Jump extends Component {
 
         </div>
 
-        <button onClick={() => this.props.edit(this.state)}>Save Jump</button>
-
-        <button onClick={() => this.props.delete(this.state)}>Delete Jump</button>
-
-        <button onClick={() => this.props.create(this.state)}>Create Jump</button>
-      </div>
+        {!jump.id ? <button onClick={() => this.props.create(this.state)}>Create Jump</button>
+          : (
+            <div>
+              <button onClick={() => this.props.delete(this.state)}>Delete Jump</button>
+              <button onClick={() => this.props.edit(this.state)}>Save Jump</button>
+            </div>
+          )
+        }
+      </div >
     )
   }
 }

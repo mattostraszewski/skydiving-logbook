@@ -58,7 +58,6 @@ export default class App extends Component {
     // pairs set to empty strings.
     //we need to update our jumpCount +1
 
-    let { jumpCount } = this.state
     this.setState({
       jumpCount: 1,
       jumps: [{
@@ -74,6 +73,7 @@ export default class App extends Component {
 
 
   createJump = (data) => {
+    console.log(data)
     const body = {
       jumpNumber: data.jumpNumber,
       date: data.dateInput,
@@ -136,10 +136,10 @@ export default class App extends Component {
             <Jump
               jump={currentJump}
               jumpCount={jumpCount}
-              { !jumps.id ? create = { this.createJump } : (
-                edit = { this.editJump }
+              create={this.createJump}
+              edit={this.editJump}
               delete={this.deleteJump}
-            />)}
+            />
           )}
       </div >
 
