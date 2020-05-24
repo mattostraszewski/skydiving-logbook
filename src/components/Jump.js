@@ -7,7 +7,6 @@ export default class Jump extends Component {
 
     this.state = {
       id: "",
-      jumpNumber: "",
       dateInput: "",
       disciplineInput: "",
       dropzoneInput: "",
@@ -41,7 +40,6 @@ export default class Jump extends Component {
   setJumpDataToState(jump) {
     this.setState({
       id: jump.id,
-      jumpNumber: jump.jumpNumber,
       dateInput: jump.date,
       disciplineInput: jump.discipline,
       dropzoneInput: jump.dropzone,
@@ -100,9 +98,9 @@ export default class Jump extends Component {
             <div>
               <button onClick={() => this.props.delete(this.state)}>Delete Jump</button>
               <button onClick={() => this.props.edit(this.state)}>Save Jump</button>
+              <button onClick={() => this.props.addAlways(this.state)}>Add Jump</button>
             </div>
-          )
-        }
+          )}
       </div >
     )
   }

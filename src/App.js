@@ -57,25 +57,22 @@ export default class App extends Component {
     // we want to update our jumps state with key value
     // pairs set to empty strings.
     //we need to update our jumpCount +1
+    const { jumpCount, jumps } = this.state;
+    const newJump = {
+      date: "",
+      discipline: "",
+      dropzone: "",
+      jumpDetails: ""
+    }
 
     this.setState({
-      jumpCount: 1,
-      jumps: [{
-        jumpNumber: 1,
-        dateInput: "",
-        discipline: "",
-        dropzone: "",
-        jumpDetails: ""
-      }]
+      jumpCount: jumpCount + 1,
+      jumps: [...jumps, newJump]
     })
   }
 
-
-
   createJump = (data) => {
-    console.log(data)
     const body = {
-      jumpNumber: data.jumpNumber,
       date: data.dateInput,
       discipline: data.disciplineInput,
       dropzone: data.dropzoneInput,
@@ -90,7 +87,6 @@ export default class App extends Component {
 
   editJump = (data) => {
     const body = {
-      jumpNumber: data.jumpNumber,
       date: data.dateInput,
       discipline: data.disciplineInput,
       dropzone: data.dropzoneInput,
@@ -139,8 +135,10 @@ export default class App extends Component {
               create={this.createJump}
               edit={this.editJump}
               delete={this.deleteJump}
+              addAlways={this.add}
             />
           )}
+
       </div >
 
     )
