@@ -60,13 +60,15 @@ export default class Jump extends Component {
   render() {
     const { jumpCount, jump } = this.props;
     const { dateInput, disciplineInput, dropzoneInput, jumpDetailsInput } = this.state
-    // grabbing this data from this.state allows us to update it via our handleChange function...
+    // grabbing this data from this.state allows us to update it via our handleChange function... we are setting the value
+    // of our inputs in our divs to the value of our updated state to be displayed.
 
     return (
-      <div className='logCardButtons'>
+      <div className='logCardButtons'>  {/* extra div to allow us to add our ternary later. */}
+
         <div className='logCard' >
 
-          <div className='jumpNumber'>
+          <div className='jumpNumber'> {/* displays our current jumpNumber to our jumpCount from state. */}
             <p>Jump Number: {jumpCount}</p>
           </div>
 
@@ -74,30 +76,39 @@ export default class Jump extends Component {
             <div className='smallInput'>
               <label className='dateText'>Date:</label>
               <input name="dateInput" value={dateInput} onChange={(e) => this.handleChange(e)} />
-            </div>
+            </div> {/* This displays the date of our current jump. */}
+
             <div className='smallInput'>
               <label className='dateText'>Discipline:</label>
               <input name="disciplineInput" value={disciplineInput} onChange={(e) => this.handleChange(e)} />
-            </div>
+            </div> {/* This displays what kind of jump we did aka the discipline */}
+
             <div className='smallInput'>
               <label className='dateText'>Dropzone:</label>
               <input name="dropzoneInput" value={dropzoneInput} onChange={(e) => this.handleChange(e)} />
-            </div>
+            </div> {/* This displays the value we have in state the represents what dropzone 
+            the jump was made at. */}
+
           </div>
 
           <div className='extraJumpInfo'>
+
             <div className='jumpDetails bigInput'>
               <label > Jump Details:</label>
               <input name='jumpDetailsInput' value={jumpDetailsInput} onChange={(e) => this.handleChange(e)} />
-            </div>
+            </div> {/* This is where we display our jumpDetails*/}
+
             <div className='jumpImage bigInput'>
               <label>Insert Image Here:</label>
               <input />
             </div>
+
           </div>
 
         </div>
 
+        {/* We check jump Id because if it doesn't exist we display create button other wise
+      we display our other buttons. */}
         {!jump.id ? <button className='button create' onClick={() => this.props.create(this.state)}>Create Jump</button>
           : (
             <div className='funButtons'>

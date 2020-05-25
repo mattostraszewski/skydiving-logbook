@@ -23,8 +23,8 @@ export default class App extends Component {
     })
   }
 
-  //this function is ran when our previous button is clicked. 
-  //this function destructors jumpCount and jumps from our state. 
+  //this function is ran when our previous button is clicked. The purpose is to go back one object in our jump array (a single jump). 
+  //this function destructs jumpCount and jumps from our state. 
   previous = () => {
     let { jumpCount, jumps } = this.state;
     let prevJump = jumpCount - 1
@@ -43,8 +43,8 @@ export default class App extends Component {
   }
 
 
-  // this function is ran when out next button is clicked.
-  //this function destructors jumpCount and jumps from our state. 
+  // this function is ran when our next button is clicked. The purpose of this function is to go forward one object in our jumps array. 
+  //this function destructs jumpCount and jumps from our state. 
   next = () => {
     let { jumpCount, jumps } = this.state;
     let nextJump = jumpCount + 1
@@ -52,8 +52,8 @@ export default class App extends Component {
       this.setState({
         jumpCount: 1
       }) // this is saying that if our jumpCount is equal to our arrays length we want to then 
-      //go back to the start of our array. This is done so that when we get to the last next jump will 
-      // bring us to the start of our logbook.
+      //go back to the start of our array. This is done so that when we get to the last jump, we will 
+      // go to the start of our logbook.
     } else {
       this.setState({
         jumpCount: nextJump
@@ -63,7 +63,8 @@ export default class App extends Component {
   }
 
   // this function is ran when we add either a first jump or add a new jump into our jumps array.
-  // we are destructing jumpCount and jumps from state.
+  // we are destructing jumpCount and jumps from state. This function differs from our create because this function is used to 
+  // update our jumpCount's state this then allows
   add = () => {
     const { jumpCount, jumps } = this.state;
     const newJump = {
@@ -85,7 +86,7 @@ export default class App extends Component {
   }
 
   // this function is responsible for taking data that was input from our user and sending 
-  // it to our backend. when createJump is clicked the state is passed/called from our child component Jump.js
+  // it to our backend. when createJump is clicked the state is passed in as an argument from our child component Jump.js
   // we created a handleChange function that updates the values of our state on user inputs in Jump.js.
   // when actually clicked those input values are passed in as our arguments...(data)
   createJump = (data) => {
@@ -102,7 +103,7 @@ export default class App extends Component {
   }
 
   // this function is responsible for taking data that was input from our user and sending 
-  // it to our backend. when editJump is clicked the state is passed/called from our child component Jump.js
+  // it to our backend. when editJump is clicked the state is passed in as an argument from our child component Jump.js
   // we created a handleChange function that updates the values of our state on user inputs in Jump.js.
   // when actually clicked those input values are passed in as our arguments...(data)
   editJump = (data) => {
@@ -112,7 +113,7 @@ export default class App extends Component {
       dropzone: data.dropzoneInput,
       jumpDetails: data.jumpDetailsInput
     } // this data is the updated data sent over from Jump.js that was all input by our user or currently in the state.
-    // we want the input data so that we can send it to our backend to create a new jump in our stored data.
+    // we want the input data so that we can send it to our backend to update a new jump in our stored data.
     axios.put(`/api/jump/${data.id}`, body).then((res) => {
       this.setState({ jumps: res.data })
     })
@@ -124,13 +125,14 @@ export default class App extends Component {
     // because jump.length !== 0 we display the jump component with jumpCount = 0 which is wrong
 
     // we need to check if when deleting jump number 1 we dont set the jump count to 0, we set it to 1
-    // when we set jump count to one the jump.js was checking jumpCount to determine if it needed to update state
+    // when we set jump count to one, jump.js was checking jumpCount to determine if it needed to update state
     // we switched the check to look at jump.id and it fixed the bug
     let newJumpCount = jumpCount - 1
 
     //We are doing this because if we delete jump 1 and there are more jumps still in our jumps array
     // we want to decrement our jump count by 1 otherwise we will set it to 0 to allow us to add one to our 
-    // jumpCount in our add function.
+    // jumpCount in our add function. We have to check both our jumpCount and jumps.length for us to find out
+    // if there are more jumps in our jumps array. 
     if (jumpCount === 1 && jumps.length > 1) newJumpCount = 1
 
     axios.delete(`/api/jump/${data.id}`).then((res) => {
@@ -148,9 +150,17 @@ export default class App extends Component {
     return (
       <div className='App' >
         <Header />
+
+        {/* Here we are doing a ternary. We make sure the jump exists and then checks if there is an ID on it.
+        If there is no ID then we want to display text. if the current jump does have an id we want to display
+        the option to go to the next jump.  */}
         {currentJump && !currentJump.id ?
           <h1 className='wayToGo'>Congrats On Your New Jump!</h1>
           : <NavButtons previous={this.previous} next={this.next} />}
+
+        {/* Here we are doing a ternary. We check to see if the jumps array has jumps in it. if it does not we 
+        display an add first jump button that allows us to then create a jump. If the jumps array has jumps in it
+        we then display the rest of our Jump.js component. */}
         {jumps.length === 0 ?
           <button className='addButton' onClick={this.add}>ADD FIRST JUMP</button>
           : (
