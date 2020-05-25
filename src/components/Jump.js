@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 export default class Jump extends Component {
 
@@ -57,12 +58,37 @@ export default class Jump extends Component {
     })
   }
 
+  // this function is responsible for taking data that was input from our user and sending 
+  // it to our backend. when createJump is clicked the state is passed in as an argument from our child component Jump.js
+  // we created a handleChange function that updates the values of our state on user inputs in Jump.js.
+  // when actually clicked those input values are passed in as our arguments...(data)
+  createJump = (data) => {
+
+    const body = {
+      id: data.id + 1,
+      date: data.dateInput,
+      discipline: data.disciplineInput,
+      dropzone: data.dropzoneInput,
+      jumpDetails: data.jumpDetailsInput
+    } // this data is the updated data sent over from Jump.js that was all input by our user.
+    // we want the input data so that we can send it to our backend to create a new jump in our stored data.
+
+    axios.post('/api/jump', body).then((res) => {
+      // this.setState({ jumps: res.data })
+      this.props.setJumpsState(res.data)
+    });
+  }
+  //THIS IS NOT THE BEST METHOD JUST AN EXAMPLE OF PASSING PROPS AND UPDATING STATE.
+  // This is being done because we need to update our jumps array in our App.js for it to be displayed.
+  // We have then created a function in App.js that simply updates the state of jumps
+  // We are invoking that function with the new data/object/jump that will then be used as an argument to update our state.
+
   render() {
     const { jumpCount, jump } = this.props;
     const { dateInput, disciplineInput, dropzoneInput, jumpDetailsInput } = this.state
     // grabbing this data from this.state allows us to update it via our handleChange function... we are setting the value
     // of our inputs in our divs to the value of our updated state to be displayed.
-
+    console.log(this.state.jumps, "state in jump.js")
     return (
       <div className='logCardButtons'>  {/* extra div to allow us to add our ternary later. */}
 
@@ -111,7 +137,7 @@ export default class Jump extends Component {
       we display our other buttons. */}
         {!jump.id ?
           <div className='twoButtons'>
-            <button className='button create' onClick={() => this.props.create(this.state)}>Create</button>
+            <button className='button create' onClick={() => this.createJump(this.state)}>Create</button>
             <button className='button' onClick={() => this.props.cancelled(this.state)}>Cancel</button>
           </div>
           : (

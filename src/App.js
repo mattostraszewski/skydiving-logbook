@@ -78,28 +78,12 @@ export default class App extends Component {
     this.setState({
       jumpCount: jumpCount + 1,
       jumps: [...jumps, newJump]
-    }) // we are setting our jumpCount to jumpCount + 1 because no matter what jump we are on
+    });
+    // we are setting our jumpCount to jumpCount + 1 because no matter what jump we are on
     // we want to increment the jumpCount. 
     // we are setting jumps to our current jumps array but also pushing in our newJumps data using the spread operator.
     // you have to include our jumps array current data in our new state unless our new jumps.state
     // would only display our newJump.
-  }
-
-  // this function is responsible for taking data that was input from our user and sending 
-  // it to our backend. when createJump is clicked the state is passed in as an argument from our child component Jump.js
-  // we created a handleChange function that updates the values of our state on user inputs in Jump.js.
-  // when actually clicked those input values are passed in as our arguments...(data)
-  createJump = (data) => {
-    const body = {
-      date: data.dateInput,
-      discipline: data.disciplineInput,
-      dropzone: data.dropzoneInput,
-      jumpDetails: data.jumpDetailsInput
-    } // this data is the updated data sent over from Jump.js that was all input by our user.
-    // we want the input data so that we can send it to our backend to create a new jump in our stored data.
-    axios.post('/api/jump', body).then((res) => {
-      this.setState({ jumps: res.data })
-    })
   }
 
 
@@ -131,6 +115,12 @@ export default class App extends Component {
     })
   }
 
+  setJumpsState = (newJumpsState) => {
+    this.setState({
+      jumps: newJumpsState
+    })
+  }
+
   deleteJump = (data) => {
     const { jumpCount, jumps } = this.state
     // if on jump 1 when we hit delete we subract 1 so jump count is 0 
@@ -145,7 +135,7 @@ export default class App extends Component {
     // we want to decrement our jump count by 1 otherwise we will set it to 0 to allow us to add one to our 
     // jumpCount in our add function. We have to check both our jumpCount and jumps.length for us to find out
     // if there are more jumps in our jumps array. 
-    if (jumpCount === 1 && jumps.length > 1) newJumpCount = 1
+    if (jumpCount === 1 && jumps.length - 1) newJumpCount = 1
 
     axios.delete(`/api/jump/${data.id}`).then((res) => {
       this.setState({ jumps: res.data, jumpCount: newJumpCount })
@@ -158,6 +148,8 @@ export default class App extends Component {
     const currentJump = jumps[jumpCount - 1]; //we are doing this specifically to access just one jump,
     // the current jump that is being displayed by its index.
 
+
+    console.log(this.state.jumps, "state in app.js")
 
     return (
       <div className='App' >
@@ -179,11 +171,11 @@ export default class App extends Component {
             <Jump
               jump={currentJump}
               jumpCount={jumpCount}
-              create={this.createJump}
               edit={this.editJump}
               delete={this.deleteJump}
               addAlways={this.add}
               cancelled={this.cancelJump}
+              setJumpsState={this.setJumpsState}
             />
           )}
 
