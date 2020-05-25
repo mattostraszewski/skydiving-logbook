@@ -146,6 +146,12 @@
   margin: 10px;
 }
 
+.twoButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80vw;
+}
+
 .wayToGo {
   margin-top: 67px;
 }

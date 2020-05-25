@@ -102,6 +102,18 @@ export default class App extends Component {
     })
   }
 
+
+  cancelJump = () => {
+    const { jumpCount, jumps } = this.state;
+    jumps.splice(jumps.length - 1, 1)
+
+    this.setState({
+      jumpCount: jumpCount - 1,
+      jumps: jumps
+    })
+
+  }
+
   // this function is responsible for taking data that was input from our user and sending 
   // it to our backend. when editJump is clicked the state is passed in as an argument from our child component Jump.js
   // we created a handleChange function that updates the values of our state on user inputs in Jump.js.
@@ -152,7 +164,7 @@ export default class App extends Component {
         <Header />
 
         {/* Here we are doing a ternary. We make sure the jump exists and then checks if there is an ID on it.
-        If there is no ID then we want to display text. if the current jump does have an id we want to display
+        If there is no ID then we want to display 'Congrats On Your New Jump!'. if the current jump does have an id we want to display
         the option to go to the next jump.  */}
         {currentJump && !currentJump.id ?
           <h1 className='wayToGo'>Congrats On Your New Jump!</h1>
@@ -171,6 +183,7 @@ export default class App extends Component {
               edit={this.editJump}
               delete={this.deleteJump}
               addAlways={this.add}
+              cancelled={this.cancelJump}
             />
           )}
 

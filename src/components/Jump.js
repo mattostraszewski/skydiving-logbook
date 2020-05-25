@@ -109,7 +109,11 @@ export default class Jump extends Component {
 
         {/* We check jump Id because if it doesn't exist we display create button other wise
       we display our other buttons. */}
-        {!jump.id ? <button className='button create' onClick={() => this.props.create(this.state)}>Create Jump</button>
+        {!jump.id ?
+          <div className='twoButtons'>
+            <button className='button create' onClick={() => this.props.create(this.state)}>Create</button>
+            <button className='button' onClick={() => this.props.cancelled(this.state)}>Cancel</button>
+          </div>
           : (
             <div className='funButtons'>
               <button className='button' onClick={() => this.props.delete(this.state)}>Delete Jump</button>
